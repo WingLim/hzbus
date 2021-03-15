@@ -2,6 +2,7 @@ import os
 import json
 from prettytable import PrettyTable
 from hzbus.parser import find_parse_route, get_route_detail, get_traffic_info, get_next_bus
+from hzbus.utils import parse_seconds
 
 
 def main():
@@ -14,9 +15,7 @@ def main():
         stopName, buses = get_next_bus(config['routeId'], config['stopId'])
         next_bus_table = PrettyTable(['公交车牌', '距离', '到达时间'])
         for one in buses:
-            m, s = divmod(one.seconds, 60)
-            h, m = divmod(m, 60)
-            next_bus_table.add_row([one.plate, one.distance, f'{h:d}:{m:02d}:{s:02d}'])
+            next_bus_table.add_row([one.plate, one.distance, parse_seconds(one.seconds)])
         print(stopName)
         if len(buses) == 0:
             print('非车辆运行时间')
