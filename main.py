@@ -34,10 +34,11 @@ def main():
             raise Exception('Out of range')
         route = get_route_detail(result[no])
         traffic_info = get_traffic_info(route)
-        route_table = PrettyTable(['序号', '站点名', '公交车牌', '距离'])
+        route_table = PrettyTable(['序号', '站点名', '公交车牌', '距离', '到达时间'])
         for i, one in enumerate(route.stops):
             if len(one.buses):
-                route_table.add_row([i, one.name, one.buses[0].plate, one.buses[0].distance])
+                time = parse_seconds(one.buses[0].seconds)
+                route_table.add_row([i, one.name, one.buses[0].plate, one.buses[0].distance, time])
             else:
                 route_table.add_row([i, one.name, '', ''])
         route_table.add_column("交通情况", traffic_info)
