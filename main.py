@@ -9,6 +9,8 @@ def main():
 
     if os.path.exists('config.json'):
         load = input('是否要加载配置文件(y/n): ')
+    else:
+        load = 'n'
     if load == 'y':
         with open('config.json', 'r') as f:
             config = json.load(f)
