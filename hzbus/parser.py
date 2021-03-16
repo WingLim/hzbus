@@ -3,7 +3,7 @@ from hzbus.api import Api
 from hzbus.model import Route, Stop, Bus
 
 
-def find_parse_route(routeName):
+def find_parse_route(routeName) -> list[Route]:
     raw = Api().find_route_by_name(routeName)
     routes = json.loads(raw)['items'][0]['routes']
     result = []
@@ -20,7 +20,7 @@ def find_parse_route(routeName):
     return result
 
 
-def parse_stops(stops):
+def parse_stops(stops) -> list[Stop]:
     result = []
     for stop in stops:
         buses = stop['buses']
@@ -36,7 +36,7 @@ def parse_stops(stops):
     return result
 
 
-def parse_buses(buses):
+def parse_buses(buses) -> list[Bus]:
     result = []
     for bus in buses:
         a_bus = Bus()
@@ -45,13 +45,14 @@ def parse_buses(buses):
         a_bus.lng = bus['lng']
         a_bus.lat = bus['lat']
         a_bus.distance = bus['nextDistance']
+        a_bus.seconds = bus['targetSeconds']
         a_bus.is_arrive = bus['isArrive']
         result.append(a_bus)
 
     return result
 
 
-def get_route_detail(route):
+def get_route_detail(route) -> Route:
     api = Api()
     raw = api.get_bus_position_by_routeId(route.id)
     stops = json.loads(raw)['items'][0]['routes'][0]['stops']
@@ -73,20 +74,10 @@ def get_traffic_info(route):
     return result
 
 
-def get_next_bus(routeId, stopId):
+def get_next_bus(routeId, stopId) -> (str, list[Bus]):
     raw = Api().get_next_bus_by_route_stopId(routeId, stopId)
     buses = json.loads(raw)['item']['nextBuses']['buses']
     stopName = json.loads(raw)['item']['nextBuses']['stopName']
-    result = []
-    for bus in buses:
-        a_bus = Bus()
-        a_bus.id = bus['busId']
-        a_bus.plate = bus['busPlate']
-        a_bus.lng = bus['lng']
-        a_bus.lat = bus['lat']
-        a_bus.distance = bus['targetDistance']
-        a_bus.seconds = bus['']
-        a_bus.is_arrive = bus['isArrive']
-        result.append(a_bus)
+    result = parse_buses(buses)
 
     return stopName, result
