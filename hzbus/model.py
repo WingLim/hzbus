@@ -1,3 +1,5 @@
+from typing import List
+
 class Route:
 
     def __init__(self):
@@ -7,7 +9,7 @@ class Route:
         self.origin = ''
         self.terminal = ''
         self.no = 0
-        self.stops = []
+        self.stops: List[Stop] = []
 
 
 class Stop:
@@ -17,7 +19,7 @@ class Stop:
         self.id = 0
         self.lng = 0
         self.lat = 0
-        self.buses = []
+        self.buses: List[Bus] = []
 
 
 class Bus:
