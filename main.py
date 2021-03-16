@@ -40,7 +40,7 @@ def main():
                 time = parse_seconds(one.buses[0].seconds)
                 route_table.add_row([i, one.name, one.buses[0].plate, one.buses[0].distance, time])
             else:
-                route_table.add_row([i, one.name, '', ''])
+                route_table.add_row([i, one.name, '', '', ''])
         route_table.add_column("交通情况", traffic_info)
         print(route_table)
 
